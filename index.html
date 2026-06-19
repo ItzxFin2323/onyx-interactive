@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onyx Interactive — Premium Roblox Experiences</title>
+  <meta name="description" content="Onyx Interactive is a Roblox development studio crafting high-quality, immersive experiences. Builders, scripters, and UI designers under one roof." />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            onyx: {
+              900: '#08080b',
+              800: '#0d0d12',
+              700: '#14141c',
+              600: '#1c1c27',
+              500: '#272736',
+            },
+            accent: {
+              DEFAULT: '#7c3aed',
+              soft: '#a78bfa',
+              glow: '#8b5cf6',
+            },
+          },
+          fontFamily: {
+            display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          keyframes: {
+            floaty: {
+              '0%,100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-12px)' },
+            },
+            pulseGlow: {
+              '0%,100%': { opacity: '0.4' },
+              '50%': { opacity: '0.9' },
+            },
+          },
+          animation: {
+            floaty: 'floaty 6s ease-in-out infinite',
+            pulseGlow: 'pulseGlow 4s ease-in-out infinite',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    h1,h2,h3,.font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+    /* Subtle animated grid backdrop */
+    .grid-bg {
+      background-image:
+        linear-gradient(to right, rgba(124,58,237,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(124,58,237,0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .text-gradient {
+      background: linear-gradient(120deg, #ffffff 0%, #c4b5fd 45%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(139,92,246,0.4), 0 18px 50px -12px rgba(124,58,237,0.45);
+    }
+    ::selection { background: rgba(124,58,237,0.45); color: #fff; }
+
+    /* Thin custom scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: #08080b; }
+    ::-webkit-scrollbar-thumb { background: #272736; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #3a3a4d; }
+  </style>
+</head>
+
+<body class="bg-onyx-900 text-slate-300 antialiased selection:text-white">
+
+  <!-- ============ NAVBAR ============ -->
+  <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5 bg-onyx-900/70 backdrop-blur-xl">
+    <nav class="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2.5 group">
+        <span class="relative grid place-items-center w-9 h-9 rounded-lg bg-gradient-to-br from-accent to-violet-900 ring-1 ring-white/10">
+          <span class="absolute inset-0 rounded-lg bg-accent/40 blur-md group-hover:bg-accent/70 transition"></span>
+          <svg class="relative w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"></polygon><path d="M2 9h20"></path><path d="m12 22 4-13-3-6"></path><path d="M12 22 8 9l3-6"></path></svg>
+        </span>
+        <span class="font-display font-semibold tracking-tight text-white text-lg">Onyx<span class="text-accent-soft"> Interactive</span></span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+        <a href="#games" class="hover:text-white transition-colors">Our Games</a>
+        <a href="#team" class="hover:text-white transition-colors">The Studio</a>
+        <a href="#contact" class="hover:text-white transition-colors">Hire Us</a>
+        <a href="#contact" class="px-4 py-2 rounded-lg bg-accent hover:bg-violet-600 text-white shadow-lg shadow-accent/25 transition-colors">Commission</a>
+      </div>
+
+      <!-- Mobile toggle -->
+      <button id="navToggle" aria-label="Toggle menu" class="md:hidden grid place-items-center w-10 h-10 rounded-lg border border-white/10 text-white">
+        <svg id="iconMenu" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="iconClose" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="md:hidden hidden border-t border-white/5 bg-onyx-800/95 backdrop-blur-xl">
+      <div class="px-5 py-4 flex flex-col gap-1 text-sm font-medium">
+        <a href="#games" class="mobile-link px-3 py-3 rounded-lg hover:bg-white/5 hover:text-white transition">Our Games</a>
+        <a href="#team" class="mobile-link px-3 py-3 rounded-lg hover:bg-white/5 hover:text-white transition">The Studio</a>
+        <a href="#contact" class="mobile-link px-3 py-3 rounded-lg hover:bg-white/5 hover:text-white transition">Hire Us</a>
+        <a href="#contact" class="mobile-link mt-2 px-3 py-3 rounded-lg bg-accent text-white text-center">Commission a Project</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="home" class="relative overflow-hidden grid-bg pt-32 pb-24 sm:pt-44 sm:pb-32">
+    <!-- glow orbs -->
+    <div class="pointer-events-none absolute -top-40 -left-32 w-[34rem] h-[34rem] rounded-full bg-accent/20 blur-3xl animate-pulseGlow"></div>
+    <div class="pointer-events-none absolute -bottom-48 -right-24 w-[30rem] h-[30rem] rounded-full bg-violet-700/10 blur-3xl"></div>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-onyx-900/40 to-onyx-900"></div>
+
+    <div class="relative max-w-7xl mx-auto px-5 sm:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 mb-7 rounded-full border border-white/10 bg-white/5 text-xs font-medium text-slate-300">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_2px_rgba(52,211,153,0.6)]"></span>
+        Now taking commissions for 2026
+      </div>
+
+      <h1 class="font-display font-bold tracking-tight text-5xl sm:text-7xl lg:text-8xl leading-[1.05] text-white">
+        <span class="text-gradient">Onyx Interactive</span>
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg sm:text-xl text-slate-400 leading-relaxed">
+        We build high-quality, polished Roblox experiences — from sprawling open worlds to tight, replayable game loops. One studio. Builders, scripters, and designers in lockstep.
+      </p>
+
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="#games" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-accent hover:bg-violet-600 text-white font-semibold shadow-xl shadow-accent/30 transition">
+          See Our Work
+          <svg class="w-4 h-4 group-hover:translate-x-0.5 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="#contact" class="w-full sm:w-auto inline-flex items-center justify-center px-7 py-3.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 text-white font-semibold transition">
+          Hire the Studio
+        </a>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-4xl mx-auto rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+        <div class="bg-onyx-800/60 px-6 py-5">
+          <div class="font-display text-2xl sm:text-3xl font-bold text-white">12+</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1">Shipped Experiences</div>
+        </div>
+        <div class="bg-onyx-800/60 px-6 py-5">
+          <div class="font-display text-2xl sm:text-3xl font-bold text-white">40M+</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1">Total Visits</div>
+        </div>
+        <div class="bg-onyx-800/60 px-6 py-5">
+          <div class="font-display text-2xl sm:text-3xl font-bold text-white">3</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1">Core Departments</div>
+        </div>
+        <div class="bg-onyx-800/60 px-6 py-5">
+          <div class="font-display text-2xl sm:text-3xl font-bold text-white">24/7</div>
+          <div class="text-xs sm:text-sm text-slate-400 mt-1">Live Ops Support</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OUR GAMES ============ -->
+  <section id="games" class="relative py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-accent-soft">Our Portfolio</p>
+        <h2 class="mt-3 font-display text-3xl sm:text-5xl font-bold text-white">Games we've built</h2>
+        <p class="mt-4 text-slate-400 text-lg">A selection of experiences crafted by the studio. Each one shipped end-to-end — concept, build, code, and UI.</p>
+      </div>
+
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Card -->
+        <article class="group relative rounded-2xl overflow-hidden border border-white/10 bg-onyx-800 card-glow transition duration-300">
+          <div class="relative h-44 bg-gradient-to-br from-orange-500/30 via-onyx-700 to-onyx-800 overflow-hidden">
+            <div class="absolute inset-0 grid-bg opacity-40"></div>
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur text-[11px] font-semibold text-white">Survival</span>
+            <span class="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold">● Live</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-white">Build the Disaster</h3>
+            <p class="mt-2 text-sm text-slate-400 leading-relaxed">Construct, fortify, and survive escalating chaos. A physics-driven sandbox with co-op rounds.</p>
+            <div class="mt-4 flex items-center gap-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>4.8</span>
+              <span>•</span>
+              <span>14.2M visits</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card -->
+        <article class="group relative rounded-2xl overflow-hidden border border-white/10 bg-onyx-800 card-glow transition duration-300">
+          <div class="relative h-44 bg-gradient-to-br from-cyan-500/30 via-onyx-700 to-onyx-800 overflow-hidden">
+            <div class="absolute inset-0 grid-bg opacity-40"></div>
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur text-[11px] font-semibold text-white">Sci-Fi RPG</span>
+            <span class="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold">● Live</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-white">The Convergence</h3>
+            <p class="mt-2 text-sm text-slate-400 leading-relaxed">A narrative-driven multiplayer RPG where factions collide across a fractured world. Deep progression systems.</p>
+            <div class="mt-4 flex items-center gap-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>4.9</span>
+              <span>•</span>
+              <span>9.7M visits</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card -->
+        <article class="group relative rounded-2xl overflow-hidden border border-white/10 bg-onyx-800 card-glow transition duration-300">
+          <div class="relative h-44 bg-gradient-to-br from-violet-500/30 via-onyx-700 to-onyx-800 overflow-hidden">
+            <div class="absolute inset-0 grid-bg opacity-40"></div>
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur text-[11px] font-semibold text-white">Tycoon</span>
+            <span class="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-amber-500/20 text-amber-300 text-[11px] font-semibold">● Beta</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-white">Neon Empire</h3>
+            <p class="mt-2 text-sm text-slate-400 leading-relaxed">Build a cyberpunk business empire from a single stall to a sprawling megacorp. Idle meets active play.</p>
+            <div class="mt-4 flex items-center gap-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>4.7</span>
+              <span>•</span>
+              <span>6.1M visits</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card -->
+        <article class="group relative rounded-2xl overflow-hidden border border-white/10 bg-onyx-800 card-glow transition duration-300">
+          <div class="relative h-44 bg-gradient-to-br from-rose-500/30 via-onyx-700 to-onyx-800 overflow-hidden">
+            <div class="absolute inset-0 grid-bg opacity-40"></div>
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur text-[11px] font-semibold text-white">PvP Arena</span>
+            <span class="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-300 text-[11px] font-semibold">● Live</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-white">Shatterpoint</h3>
+            <p class="mt-2 text-sm text-slate-400 leading-relaxed">Fast-paced 6v6 ability combat with a skill ceiling that rewards mastery. Ranked seasons included.</p>
+            <div class="mt-4 flex items-center gap-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>4.8</span>
+              <span>•</span>
+              <span>5.3M visits</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card -->
+        <article class="group relative rounded-2xl overflow-hidden border border-white/10 bg-onyx-800 card-glow transition duration-300">
+          <div class="relative h-44 bg-gradient-to-br from-emerald-500/30 via-onyx-700 to-onyx-800 overflow-hidden">
+            <div class="absolute inset-0 grid-bg opacity-40"></div>
+            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/40 backdrop-blur text-[11px] font-semibold text-white">Adventure</span>
+            <span class="absolute bottom-3 right-3 px-2 py-1 rounded-md bg-amber-500/20 text-amber-300 text-[11px] font-semibold">● Beta</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-display text-xl font-semibold text-white">Hollow Reach</h3>
+            <p class="mt-2 text-sm text-slate-400 leading-relaxed">An atmospheric co-op exploration game through forgotten ruins. Puzzles, secrets, and a haunting score.</p>
+            <div class="mt-4 flex items-center gap-3 text-xs text-slate-500">
+              <span class="inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>4.6</span>
+              <span>•</span>
+              <span>3.0M visits</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card: coming soon -->
+        <article class="group relative rounded-2xl overflow-hidden border border-dashed border-white/15 bg-onyx-800/50 grid place-items-center text-center p-8 min-h-[18rem] hover:border-accent/50 transition">
+          <div>
+            <div class="mx-auto grid place-items-center w-12 h-12 rounded-xl bg-accent/15 text-accent-soft mb-4">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </div>
+            <h3 class="font-display text-lg font-semibold text-white">Your game next?</h3>
+            <p class="mt-2 text-sm text-slate-400">We have open slots for new commissions.</p>
+            <a href="#contact" class="mt-4 inline-block text-sm font-semibold text-accent-soft hover:text-white transition">Start a project →</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM & DEPARTMENTS ============ -->
+  <section id="team" class="relative py-20 sm:py-28 border-t border-white/5 bg-onyx-800/30">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-accent-soft">Inside the Studio</p>
+        <h2 class="mt-3 font-display text-3xl sm:text-5xl font-bold text-white">Three branches, one team</h2>
+        <p class="mt-4 text-slate-400 text-lg">Every project flows through our three core departments — working together from first block to final polish.</p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="mt-10">
+        <div id="tabBar" class="inline-flex flex-wrap gap-2 p-1.5 rounded-2xl border border-white/10 bg-onyx-800">
+          <button data-tab="builders" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition">
+            <span class="inline-flex items-center gap-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>Builders</span>
+          </button>
+          <button data-tab="scripters" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition">
+            <span class="inline-flex items-center gap-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>Scripters</span>
+          </button>
+          <button data-tab="ui" class="tab-btn px-5 py-2.5 rounded-xl text-sm font-semibold transition">
+            <span class="inline-flex items-center gap-2"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>UI Designers</span>
+          </button>
+        </div>
+
+        <!-- ====== Builders ====== -->
+        <div data-panel="builders" class="tab-panel mt-8">
+          <div class="grid gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-1 rounded-2xl border border-white/10 bg-gradient-to-br from-amber-500/10 to-onyx-800 p-6">
+              <h3 class="font-display text-2xl font-bold text-white">Builders</h3>
+              <p class="mt-1 text-sm font-medium text-amber-300">Environment &amp; Map Design</p>
+              <p class="mt-4 text-sm text-slate-400 leading-relaxed">The world-shapers. Our builders craft immersive, performant environments — from terrain and lighting to set-dressing that sells the fantasy.</p>
+            </div>
+            <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+              <!-- profile -->
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-600 font-display font-bold text-white text-lg">VX</div>
+                  <div>
+                    <h4 class="font-semibold text-white">VortexBuilds</h4>
+                    <p class="text-xs text-slate-400">Lead Environment Artist</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Specializes in large-scale open worlds and optimized streaming environments.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Terrain</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Lighting</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Optimization</span>
+                </div>
+              </div>
+              <!-- profile -->
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 font-display font-bold text-white text-lg">KB</div>
+                  <div>
+                    <h4 class="font-semibold text-white">KitBashKira</h4>
+                    <p class="text-xs text-slate-400">Modular Set Designer</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Builds reusable modular kits that keep projects fast to iterate and visually consistent.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Modular</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Props</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Worldbuilding</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== Scripters ====== -->
+        <div data-panel="scripters" class="tab-panel mt-8 hidden">
+          <div class="grid gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-1 rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/10 to-onyx-800 p-6">
+              <h3 class="font-display text-2xl font-bold text-white">Scripters</h3>
+              <p class="mt-1 text-sm font-medium text-cyan-300">Core Mechanics &amp; Systems</p>
+              <p class="mt-4 text-sm text-slate-400 leading-relaxed">The engine room. Our scripters architect secure, server-authoritative systems — combat, economies, data, and live ops — built to scale.</p>
+            </div>
+            <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-600 font-display font-bold text-white text-lg">NS</div>
+                  <div>
+                    <h4 class="font-semibold text-white">NullStack</h4>
+                    <p class="text-xs text-slate-400">Lead Systems Engineer</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Designs anti-exploit, server-authoritative gameplay frameworks and data pipelines.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Luau</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Networking</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Anti-Exploit</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-sky-400 to-indigo-600 font-display font-bold text-white text-lg">QD</div>
+                  <div>
+                    <h4 class="font-semibold text-white">QuantumDev</h4>
+                    <p class="text-xs text-slate-400">Gameplay Programmer</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Turns design docs into crisp, responsive gameplay — combat, abilities, and progression.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Combat</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Economy</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Tooling</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====== UI Designers ====== -->
+        <div data-panel="ui" class="tab-panel mt-8 hidden">
+          <div class="grid gap-6 lg:grid-cols-3">
+            <div class="lg:col-span-1 rounded-2xl border border-white/10 bg-gradient-to-br from-violet-500/10 to-onyx-800 p-6">
+              <h3 class="font-display text-2xl font-bold text-white">UI Designers</h3>
+              <p class="mt-1 text-sm font-medium text-violet-300">Interfaces &amp; Menus</p>
+              <p class="mt-4 text-sm text-slate-400 leading-relaxed">The first thing players touch. Our UI team crafts clean, responsive, satisfying interfaces with motion and feedback that feel premium.</p>
+            </div>
+            <div class="lg:col-span-2 grid sm:grid-cols-2 gap-6">
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-violet-400 to-purple-600 font-display font-bold text-white text-lg">PX</div>
+                  <div>
+                    <h4 class="font-semibold text-white">PixelPetal</h4>
+                    <p class="text-xs text-slate-400">Lead UI/UX Designer</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Owns the design system — typography, motion, and consistent component libraries.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">UX</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Motion</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Design Systems</span>
+                </div>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-onyx-800 p-5 card-glow transition">
+                <div class="flex items-center gap-4">
+                  <div class="grid place-items-center w-14 h-14 rounded-xl bg-gradient-to-br from-fuchsia-400 to-pink-600 font-display font-bold text-white text-lg">HD</div>
+                  <div>
+                    <h4 class="font-semibold text-white">HudHaven</h4>
+                    <p class="text-xs text-slate-400">UI Implementer</p>
+                  </div>
+                </div>
+                <p class="mt-4 text-sm text-slate-400">Bridges design and code — builds pixel-perfect, scalable HUDs that work on every device.</p>
+                <div class="mt-4 flex flex-wrap gap-2 text-[11px]">
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Responsive</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">HUD</span>
+                  <span class="px-2 py-1 rounded-md bg-white/5 text-slate-300">Animation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT / HIRE US ============ -->
+  <section id="contact" class="relative py-20 sm:py-28">
+    <div class="max-w-5xl mx-auto px-5 sm:px-8">
+      <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-onyx-700 to-onyx-800 p-8 sm:p-14 text-center">
+        <div class="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-accent/20 blur-3xl animate-pulseGlow"></div>
+        <div class="relative">
+          <p class="text-sm font-semibold uppercase tracking-[0.2em] text-accent-soft">Let's build together</p>
+          <h2 class="mt-3 font-display text-3xl sm:text-5xl font-bold text-white">Commission Onyx Interactive</h2>
+          <p class="mx-auto mt-4 max-w-xl text-slate-400 text-lg">Got a concept, a game that needs finishing, or a system that needs building? Bring it to us. We turn ideas into experiences players love.</p>
+
+          <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="#" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#5865F2] hover:bg-[#4752c4] text-white font-semibold shadow-xl shadow-indigo-900/30 transition">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.369A19.79 19.79 0 0 0 16.558 3c-.2.36-.43.84-.59 1.23a18.27 18.27 0 0 0-5.91 0A11.5 11.5 0 0 0 9.45 3 19.74 19.74 0 0 0 5.69 4.37C2.05 9.79 1.06 15.07 1.55 20.27a19.93 19.93 0 0 0 6.08 3.08c.49-.67.93-1.39 1.31-2.14-.72-.27-1.41-.6-2.06-.99.17-.13.34-.26.5-.4a14.2 14.2 0 0 0 12.24 0c.16.14.33.27.5.4-.65.39-1.34.72-2.06.99.38.75.82 1.46 1.31 2.14a19.9 19.9 0 0 0 6.08-3.08c.57-6.05-.98-11.29-4.13-15.9zM8.02 16.33c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.09 2.15 2.42 0 1.33-.95 2.41-2.15 2.41zm7.96 0c-1.18 0-2.15-1.08-2.15-2.41 0-1.33.95-2.42 2.15-2.42 1.2 0 2.17 1.09 2.15 2.42 0 1.33-.94 2.41-2.15 2.41z"/></svg>
+              Join our Discord
+            </a>
+            <a href="#" class="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl bg-white text-onyx-900 hover:bg-slate-200 font-semibold shadow-xl transition">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M5.164 0 .16 18.928 18.836 24 24 5.072 5.164 0zm9.476 14.802-4.594-1.235 1.235-4.594 4.594 1.235-1.235 4.594z"/></svg>
+              Roblox Group
+            </a>
+          </div>
+
+          <p class="mt-6 text-sm text-slate-500">Prefer email? Reach the studio at <a href="mailto:hello@onyxinteractive.gg" class="text-accent-soft hover:text-white transition underline-offset-4 hover:underline">hello@onyxinteractive.gg</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="border-t border-white/5 bg-onyx-900">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-2.5">
+        <span class="grid place-items-center w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-violet-900 ring-1 ring-white/10">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9 6 3"></polygon><path d="M2 9h20"></path></svg>
+        </span>
+        <span class="font-display font-semibold text-white">Onyx Interactive</span>
+      </div>
+
+      <nav class="flex items-center gap-6 text-sm text-slate-400">
+        <a href="#games" class="hover:text-white transition">Games</a>
+        <a href="#team" class="hover:text-white transition">Studio</a>
+        <a href="#contact" class="hover:text-white transition">Hire Us</a>
+      </nav>
+
+      <p class="text-xs text-slate-500">© 2026 Onyx Interactive. Not affiliated with Roblox Corporation.</p>
+    </div>
+  </footer>
+
+  <!-- ============ MINIMAL JS ============ -->
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const iconMenu = document.getElementById('iconMenu');
+    const iconClose = document.getElementById('iconClose');
+
+    function closeMenu() {
+      mobileMenu.classList.add('hidden');
+      iconMenu.classList.remove('hidden');
+      iconClose.classList.add('hidden');
+    }
+    navToggle.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.toggle('hidden');
+      iconMenu.classList.toggle('hidden', !isHidden);
+      iconClose.classList.toggle('hidden', isHidden);
+    });
+    document.querySelectorAll('.mobile-link').forEach(link =>
+      link.addEventListener('click', closeMenu)
+    );
+
+    // Department tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+    const activeCls = ['bg-accent', 'text-white', 'shadow-lg', 'shadow-accent/25'];
+    const idleCls = ['text-slate-400', 'hover:text-white'];
+
+    function setTab(name) {
+      tabBtns.forEach(btn => {
+        const on = btn.dataset.tab === name;
+        btn.classList.toggle('bg-accent', on);
+        btn.classList.toggle('text-white', on);
+        btn.classList.toggle('shadow-lg', on);
+        btn.classList.toggle('text-slate-400', !on);
+        btn.classList.toggle('hover:text-white', !on);
+      });
+      panels.forEach(p => p.classList.toggle('hidden', p.dataset.panel !== name));
+    }
+    tabBtns.forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+    setTab('builders'); // default
+  </script>
+</body>
+</html>
